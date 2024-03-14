@@ -82,9 +82,9 @@ You can pass updates to the configuration through the command line like so:
 
 To extract alignments from the model run `dfaligner extract-alignments config/everyvoice-aligner.yaml --model path/to/model.ckpt`.
 
-To output alignments in text\_grid, run `dfaligner extract-alignments config/everyvoice-aligner.yaml --model path/to/model.ckpt --tg utt_num`, where `utt_num` is the number of utterances in your dataset.
+To output alignments in text\_grid, run `dfaligner extract-alignments config/everyvoice-aligner.yaml --model path/to/model.ckpt --tg utt_count`, where `utt_count` is the number of utterances in your dataset.
 
-The extracted alignment can be found in `preprocessing.save_dir`.
+The extracted alignment can be found in `save_dir` specifified in `config/everyvoice-shared-data.yaml`
 
 ## Contributing
 
