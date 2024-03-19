@@ -46,7 +46,7 @@ class Aligner(pl.LightningModule):
         self.config: AlignerConfig = config  # type: ignore
         self.preprocessed_dir = Path(self.config.preprocessing.save_dir)
         self.sep = "--"
-        self.text_processor = TextProcessor(self.config)
+        self.text_processor = TextProcessor(self.config.text)
         conv_dim = self.config.model.conv_dim
         lstm_dim = self.config.model.lstm_dim
         n_mels = self.config.preprocessing.audio.n_mels

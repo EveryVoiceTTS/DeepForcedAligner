@@ -110,7 +110,7 @@ class AlignerDataset(Dataset):
         self.config = config
         self.data = data
         self.preprocessed_dir = Path(self.config.preprocessing.save_dir)
-        self.text_processor = TextProcessor(config)
+        self.text_processor = TextProcessor(config.text)
         self.sep = "--"
         self.sampling_rate = self.config.preprocessing.audio.alignment_sampling_rate
 

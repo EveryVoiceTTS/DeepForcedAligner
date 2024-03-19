@@ -157,7 +157,7 @@ def extract_alignments(
             trainer.predict(dataloaders=data)
     SEP = "--"
     tg_processed = 0
-    text_processor = TextProcessor(config)
+    text_processor = TextProcessor(config.text)
     for item in tqdm(
         data.predict_dataloader().dataset,
         total=len(data.predict_dataloader().dataset),
