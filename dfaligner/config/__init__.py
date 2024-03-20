@@ -91,3 +91,5 @@ class DFAlignerConfig(BaseModelWithContact):
         with init_context({"config_path": path}):
             config = DFAlignerConfig(**config)
         return config
+
+    # INPUT_TODO: initialize text with union of symbols from dataset

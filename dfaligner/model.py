@@ -6,7 +6,7 @@ import pytorch_lightning as pl
 import torch
 import torch.nn as nn
 from everyvoice.model.aligner.config import AlignerConfig
-from everyvoice.text import TextProcessor
+from everyvoice.text.text_processor import TextProcessor
 
 from .config import DFAlignerConfig
 from .duration_extraction import extract_durations_with_dijkstra
@@ -159,8 +159,8 @@ class Aligner(pl.LightningModule):
             self.longest_tokens.squeeze(0).numpy(), pred.numpy()
         )
         pred_max = pred.max(1)[1].numpy().tolist()
-        pred_text = self.text_processor.token_sequence_to_text(pred_max)
-        target_text = self.text_processor.token_sequence_to_text(
+        pred_text = self.text_processor.decode_tokens(pred_max)
+        target_text = self.text_processor.decode_tokens(
             self.longest_tokens.squeeze().tolist()
         )
         target_duration_rep = "".join(
