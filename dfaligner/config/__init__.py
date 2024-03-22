@@ -9,6 +9,7 @@ from everyvoice.config.shared_types import (
     BaseModelWithContact,
     BaseTrainingConfig,
     ConfigModel,
+    TargetTrainingTextRepresentationLevel,
     init_context,
 )
 from everyvoice.config.text_config import TextConfig
@@ -23,6 +24,9 @@ class DFAlignerExtractionMethod(Enum):
 
 
 class DFAlignerModelConfig(ConfigModel):
+    target_text_representation_level: TargetTrainingTextRepresentationLevel = (
+        TargetTrainingTextRepresentationLevel.characters
+    )
     lstm_dim: int = Field(
         512, description="The number of dimensions in the LSTM layers."
     )

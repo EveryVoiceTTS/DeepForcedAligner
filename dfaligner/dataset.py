@@ -6,6 +6,7 @@ from typing import Optional
 import numpy as np
 import pytorch_lightning as pl
 import torch
+from everyvoice.config.shared_types import TargetTrainingTextRepresentationLevel
 from everyvoice.text.text_processor import TextProcessor
 from everyvoice.utils import check_dataset_size, generic_dict_loader
 from torch.nn.utils.rnn import pad_sequence
@@ -135,7 +136,23 @@ class AlignerDataset(Dataset):
             .squeeze()
             .transpose(0, 1)
         )  # [mel_bins, frames] -> [frames, mel_bins]
-        text_tokens = self._load_file(basename, speaker, language, "text", "text.pt")
+        if (
+            self.config.model.target_text_representation_level
+            == TargetTrainingTextRepresentationLevel.characters
+        ):
+            text_tokens = torch.Tensor(
+                self.text_processor.encode_escaped_string_sequence(
+                    item["character_tokens"]
+                )
+            ).long()
+        elif self.config.model.target_text_representation_level in [
+            TargetTrainingTextRepresentationLevel.ipa_phones,
+            TargetTrainingTextRepresentationLevel.phonological_features,
+        ]:
+            text_tokens = torch.Tensor(
+                self.text_processor.encode_escaped_string_sequence(item["phone_tokens"])
+            ).long()
+
         tokens_len = text_tokens.size(0)
         mel_len = mel.size(0)
         return {
