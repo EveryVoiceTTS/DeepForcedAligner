@@ -6,7 +6,7 @@ from typing import Optional
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from everyvoice.config.shared_types import TargetTrainingTextRepresentationLevel
+from everyvoice.config.type_definitions import TargetTrainingTextRepresentationLevel
 from everyvoice.text.text_processor import TextProcessor
 from everyvoice.utils import check_dataset_size, generic_psv_filelist_reader
 from torch.nn.utils.rnn import pad_sequence
