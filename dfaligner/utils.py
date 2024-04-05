@@ -60,12 +60,13 @@ def extract_durations_for_item(item, tokens, pred, method: str = "beam"):
     tokens_len, mel_len = item["tokens_len"], item["mel_len"]
     tokens = tokens[:tokens_len]
     pred = pred[:mel_len, :]
-    if method == "beam":
-        duration_candidates, _ = extract_durations_beam(tokens, pred, 10)
-        durations = duration_candidates[0]
-    elif method == "dijkstra":
-        durations = extract_durations_with_dijkstra(tokens, pred)
-    else:
-        raise NotImplementedError(f"Sorry, method '{method}' is not implemented")
+    match method:
+        case "beam":
+            duration_candidates, _ = extract_durations_beam(tokens, pred, 10)
+            durations = duration_candidates[0]
+        case "dijkstra":
+            durations = extract_durations_with_dijkstra(tokens, pred)
+        case _:
+            raise NotImplementedError(f"Sorry, method '{method}' is not implemented")
 
     return item, durations

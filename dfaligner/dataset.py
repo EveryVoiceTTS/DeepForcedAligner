@@ -140,26 +140,23 @@ class AlignerDataset(Dataset):
             .squeeze()
             .transpose(0, 1)
         )  # [mel_bins, frames] -> [frames, mel_bins]
-        if (
-            self.config.model.target_text_representation_level
-            == TargetTrainingTextRepresentationLevel.characters
-        ):
-            text_tokens = torch.Tensor(
-                self.text_processor.encode_escaped_string_sequence(
-                    item["character_tokens"]
+        match self.config.model.target_text_representation_level:
+            case TargetTrainingTextRepresentationLevel.characters:
+                text_tokens = torch.Tensor(
+                    self.text_processor.encode_escaped_string_sequence(
+                        item["character_tokens"]
+                    )
+                ).long()
+            case TargetTrainingTextRepresentationLevel.ipa_phones | TargetTrainingTextRepresentationLevel.phonological_features:
+                text_tokens = torch.Tensor(
+                    self.text_processor.encode_escaped_string_sequence(
+                        item["phone_tokens"]
+                    )
+                ).long()
+            case _:
+                raise NotImplementedError(
+                    f"{self.config.model.target_text_representation_level} have not yet been implemented."
                 )
-            ).long()
-        elif self.config.model.target_text_representation_level in [
-            TargetTrainingTextRepresentationLevel.ipa_phones,
-            TargetTrainingTextRepresentationLevel.phonological_features,
-        ]:
-            text_tokens = torch.Tensor(
-                self.text_processor.encode_escaped_string_sequence(item["phone_tokens"])
-            ).long()
-        else:
-            raise NotImplementedError(
-                f"{self.config.model.target_text_representation_level} have not yet been implemented."
-            )
 
         tokens_len = text_tokens.size(0)
         mel_len = mel.size(0)
