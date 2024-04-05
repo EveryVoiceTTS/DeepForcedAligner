@@ -156,6 +156,10 @@ class AlignerDataset(Dataset):
             text_tokens = torch.Tensor(
                 self.text_processor.encode_escaped_string_sequence(item["phone_tokens"])
             ).long()
+        else:
+            raise NotImplementedError(
+                f"{self.config.model.target_text_representation_level} have not yet been implemented."
+            )
 
         tokens_len = text_tokens.size(0)
         mel_len = mel.size(0)

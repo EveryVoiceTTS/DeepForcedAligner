@@ -187,7 +187,7 @@ def extract_alignments(
                 save_dir
                 / "text_grid"
                 / SEP.join([basename, speaker, language, "duration.TextGrid"]),
-                text_processor._token_sequence_to_text_sequence(tokens.tolist()),
+                text_processor.token_sequence_to_text_sequence(tokens.tolist()),
                 durations,
                 hop_size=config.preprocessing.audio.fft_hop_size,
                 sample_rate=config.preprocessing.audio.alignment_sampling_rate,
