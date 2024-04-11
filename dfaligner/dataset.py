@@ -8,7 +8,11 @@ import pytorch_lightning as pl
 import torch
 from everyvoice.config.type_definitions import TargetTrainingTextRepresentationLevel
 from everyvoice.text.text_processor import TextProcessor
-from everyvoice.utils import check_dataset_size, generic_psv_filelist_reader
+from everyvoice.utils import (
+    check_dataset_size,
+    filter_dataset_based_on_target_text_representation_level,
+    generic_psv_filelist_reader,
+)
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data.dataloader import DataLoader
 from torch.utils.data.dataset import Dataset
@@ -73,6 +77,15 @@ class AlignerDataModule(pl.LightningDataModule):
         )
 
     def prepare_data(self):
+        (
+            self.train_dataset,
+            self.val_dataset,
+        ) = filter_dataset_based_on_target_text_representation_level(
+            self.config.model.target_text_representation_level,
+            self.train_dataset,
+            self.val_dataset,
+            self.batch_size,
+        )
         train_samples = len(self.train_dataset)
         val_samples = len(self.val_dataset)
         check_dataset_size(self.batch_size, train_samples, "training")
