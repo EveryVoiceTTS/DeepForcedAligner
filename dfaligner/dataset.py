@@ -155,17 +155,17 @@ class AlignerDataset(Dataset):
         )  # [mel_bins, frames] -> [frames, mel_bins]
         match self.config.model.target_text_representation_level:
             case TargetTrainingTextRepresentationLevel.characters:
-                text_tokens = torch.Tensor(
+                text_tokens = torch.IntTensor(
                     self.text_processor.encode_escaped_string_sequence(
                         item["character_tokens"]
                     )
-                ).long()
+                )
             case TargetTrainingTextRepresentationLevel.ipa_phones | TargetTrainingTextRepresentationLevel.phonological_features:
-                text_tokens = torch.Tensor(
+                text_tokens = torch.IntTensor(
                     self.text_processor.encode_escaped_string_sequence(
                         item["phone_tokens"]
                     )
-                ).long()
+                )
             case _:
                 raise NotImplementedError(
                     f"{self.config.model.target_text_representation_level} have not yet been implemented."
@@ -209,7 +209,7 @@ class BinnedLengthSampler(Sampler):
             last_bin = idx[len(binned_idx) :]
             self.random.shuffle(last_bin)
             binned_idx = np.concatenate([binned_idx, last_bin])
-        return iter(torch.tensor(binned_idx).long())
+        return iter(torch.IntTensor(binned_idx))
 
     def __len__(self):
         return len(self.idx)
@@ -222,8 +222,8 @@ def collate_dataset(batch: list[dict]) -> dict[str, torch.Tensor | list[str]]:
     mels: torch.Tensor = pad_sequence(
         [b["mel"] for b in batch], batch_first=True, padding_value=0
     )
-    tokens_len = torch.tensor([b["tokens_len"] for b in batch]).long()
-    mel_len = torch.tensor([b["mel_len"] for b in batch]).long()
+    tokens_len = torch.IntTensor([b["tokens_len"] for b in batch])
+    mel_len = torch.IntTensor([b["mel_len"] for b in batch])
     return {
         "tokens": tokens,
         "mel": mels,

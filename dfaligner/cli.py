@@ -194,7 +194,7 @@ def extract_alignments(
             )
             tg_processed += 1
         torch.save(
-            torch.tensor(durations).long(),
+            torch.IntTensor(durations),
             save_dir
             / "duration"
             / SEP.join([basename, speaker, language, "duration.pt"]),
