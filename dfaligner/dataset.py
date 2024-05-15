@@ -77,13 +77,16 @@ class AlignerDataModule(pl.LightningDataModule):
         )
 
     def prepare_data(self):
-        (
-            self.train_dataset,
-            self.val_dataset,
-        ) = filter_dataset_based_on_target_text_representation_level(
+        self.train_dataset = filter_dataset_based_on_target_text_representation_level(
             self.config.model.target_text_representation_level,
             self.train_dataset,
+            "training",
+            self.batch_size,
+        )
+        self.val_dataset = filter_dataset_based_on_target_text_representation_level(
+            self.config.model.target_text_representation_level,
             self.val_dataset,
+            "validation",
             self.batch_size,
         )
         train_samples = len(self.train_dataset)
