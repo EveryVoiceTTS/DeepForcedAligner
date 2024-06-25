@@ -27,7 +27,7 @@ setup(
     author="Aidan Pine",
     author_email="hello@aidanpine.ca",
     license="MIT",
-    url="https://github.com/roedoejet/DeepForcedAligner",
+    url="https://github.com/EveryVoiceTTS/DeepForcedAligner",
     description="Text/Speech Alignment Speech Generation for Indigenous Language Education Small Teams Project",
     long_description=long_description,
     long_description_content_type="text/markdown",
