@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from everyvoice.model.aligner.config import AlignerConfig
 from everyvoice.text.text_processor import TextProcessor
+from everyvoice.utils import pydantic_validation_error_shortener
 
 from .config import DFAlignerConfig
 from .duration_extraction import extract_durations_with_dijkstra
@@ -42,7 +43,17 @@ class Aligner(pl.LightningModule):
     ) -> None:
         super().__init__()
         if isinstance(config, dict):
-            config = AlignerConfig(**config)
+            from pydantic import ValidationError
+
+            try:
+                config = AlignerConfig(**config)
+            except ValidationError as e:
+                from loguru import logger
+
+                logger.error(f"{pydantic_validation_error_shortener(e)}")
+                raise TypeError(
+                    "Unable to load config.  Possible causes: is it really a AlignerConfig? or the correct version?"
+                )
         self.config: AlignerConfig = config  # type: ignore
         self.preprocessed_dir = Path(self.config.preprocessing.save_dir)
         self.sep = "--"
