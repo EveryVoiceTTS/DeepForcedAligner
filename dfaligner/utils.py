@@ -32,7 +32,7 @@ def read_metafile(path: str) -> dict[str, str]:
 
 
 def read_config(path: str) -> dict[str, Any]:
-    with open(path, "r") as stream:
+    with open(path, "r", encoding="utf-8") as stream:
         config = yaml.load(stream, Loader=yaml.FullLoader)
     return config
 
