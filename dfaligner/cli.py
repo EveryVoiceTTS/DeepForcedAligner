@@ -90,15 +90,21 @@ def train(**kwargs):
 
 
 @app.command(
-    short_help="TODO IS THIS JUST 'Extract your alignments'?",
+    short_help="Extract preprocessed alignments or generate and extract alignments",
     help=f"""
     # extract-alignments help
 
-    QUESTION IS THIS ACCURATE? I EXPECT NOT, BECAUSE IT TAKES A CONFIG, NOT A MODEL.
-    Extract the alingments from your aligner model.
+    Mode 1: with --config, extract alignments from preprocessed and stored alignment model outputs.
+    \n\n
     For example:
     \n\n
-    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml**
+    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml TODO FIX THIS**
+    \n\n
+    Mode 2: without --config, generate the model outputs and extract the alignments.
+    \n\n
+    For example:
+    \n\n
+    **dfaligner extract-alignments TODO COMPLETE THIS**
     """,
 )
 def extract_alignments(
