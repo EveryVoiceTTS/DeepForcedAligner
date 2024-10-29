@@ -94,17 +94,17 @@ def train(**kwargs):
     help=f"""
     # extract-alignments help
 
-    Mode 1: with --config, extract alignments from preprocessed and stored alignment model outputs.
+    Mode 1: extract alignments from preprocessed and stored alignment model outputs.
     \n\n
     For example:
     \n\n
-    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml TODO FIX THIS**
+    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml --no-predict**
     \n\n
-    Mode 2: without --config, generate the model outputs and extract the alignments.
+    Mode 2: with --model, generate the model outputs and extract the alignments.
     \n\n
     For example:
     \n\n
-    **dfaligner extract-alignments TODO COMPLETE THIS**
+    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml --model <path_to_trained_model>**
     """,
 )
 def extract_alignments(
