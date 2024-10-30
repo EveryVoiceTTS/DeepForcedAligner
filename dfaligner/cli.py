@@ -8,6 +8,7 @@ from everyvoice.base_cli.interfaces import (
     train_base_command_interface,
 )
 from everyvoice.utils import spinner
+from everyvoice.wizard import ALIGNER_CONFIG_FILENAME_PREFIX
 from loguru import logger
 from merge_args import merge_args
 from tqdm import tqdm
@@ -17,6 +18,7 @@ from .config import DFAlignerConfig
 app = typer.Typer(
     pretty_exceptions_show_locals=False,
     context_settings={"help_option_names": ["-h", "--help"]},
+    rich_markup_mode="markdown",
     help="A fork of the DeepForcedAligner project implemented in PyTorch Lightning",
 )
 
@@ -27,7 +29,17 @@ class PreprocessCategories(str, Enum):
     text = "text"
 
 
-@app.command()
+@app.command(
+    short_help="Preprocess your data",
+    help=f"""
+    # Preprocess Help
+
+    This command will preprocess all of the data you need for use with DeepForcedAligner.
+    For example:
+    \n\n
+    **dfaligner preprocess config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml**
+    """,
+)
 @merge_args(preprocess_base_command_interface)
 def preprocess(
     steps: list[PreprocessCategories] = typer.Option(
@@ -48,7 +60,17 @@ def preprocess(
     )
 
 
-@app.command()
+@app.command(
+    short_help="Train your aligner model",
+    help=f"""
+    # Train help
+
+    Train your aligner model.
+    For example:
+    \n\n
+    **dfaligner train config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml**
+    """,
+)
 @merge_args(train_base_command_interface)
 def train(**kwargs):
     with spinner():
@@ -67,7 +89,24 @@ def train(**kwargs):
     )
 
 
-@app.command()
+@app.command(
+    short_help="Extract preprocessed alignments or generate and extract alignments",
+    help=f"""
+    # extract-alignments help
+
+    Mode 1: extract alignments from preprocessed and stored alignment model outputs.
+    \n\n
+    For example:
+    \n\n
+    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml --no-predict**
+    \n\n
+    Mode 2: with --model, generate the model outputs and extract the alignments.
+    \n\n
+    For example:
+    \n\n
+    **dfaligner extract-alignments config/{ALIGNER_CONFIG_FILENAME_PREFIX}.yaml --model <path_to_trained_model>**
+    """,
+)
 def extract_alignments(
     config_file: Path = typer.Argument(
         ...,
