@@ -66,11 +66,8 @@ class DFAlignerTrainingConfig(BaseTrainingConfig):
 class DFAlignerConfig(BaseModelWithContact):
     VERSION: Annotated[
         str,
-        Field(
-            default_factory=lambda: LATEST_VERSION,
-            init_var=False,
-        ),
-    ]
+        Field(init_var=False),
+    ] = LATEST_VERSION
 
     # TODO FastSpeech2Config and DFAlignerConfig are almost identical.
     model: DFAlignerModelConfig = Field(
