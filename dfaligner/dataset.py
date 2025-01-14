@@ -44,8 +44,9 @@ class AlignerDataModule(pl.LightningDataModule):
 
     def setup(self, stage: Optional[str] = None):
         # load it back here
-        self.train_dataset = torch.load(self.train_path)
-        self.val_dataset = torch.load(self.val_path)
+        # TODO investigate if we can convert to using weights_only=True
+        self.train_dataset = torch.load(self.train_path, weights_only=False)
+        self.val_dataset = torch.load(self.val_path, weights_only=False)
 
     def train_dataloader(self):
         return DataLoader(
@@ -137,7 +138,8 @@ class AlignerDataset(Dataset):
 
     def _load_file(self, bn, spk, lang, dir, fn):
         return torch.load(
-            self.preprocessed_dir / dir / self.sep.join([bn, spk, lang, fn])
+            self.preprocessed_dir / dir / self.sep.join([bn, spk, lang, fn]),
+            weights_only=True,
         )
 
     def __getitem__(self, index):
@@ -163,7 +165,10 @@ class AlignerDataset(Dataset):
                         item["character_tokens"]
                     )
                 )
-            case TargetTrainingTextRepresentationLevel.ipa_phones | TargetTrainingTextRepresentationLevel.phonological_features:
+            case (
+                TargetTrainingTextRepresentationLevel.ipa_phones
+                | TargetTrainingTextRepresentationLevel.phonological_features
+            ):
                 text_tokens = torch.IntTensor(
                     self.text_processor.encode_escaped_string_sequence(
                         item["phone_tokens"]
