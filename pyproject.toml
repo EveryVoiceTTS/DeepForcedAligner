@@ -41,6 +41,8 @@ dfaligner = "dfaligner.cli:app"
 
 [project.urls]
 Homepage = "https://github.com/EveryVoiceTTS/DeepForcedAligner"
+Repository = "https://github.com/EveryVoiceTTS/DeepForcedAligner"
+Issues = "https://github.com/EveryVoiceTTS/DeepForcedAligner/issues"
 
 [tool.hatch.version]
 path = "dfaligner/_version.py"
