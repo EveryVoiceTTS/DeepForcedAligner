@@ -90,7 +90,7 @@ The extracted alignment can be found in `save_dir` specified in `config/everyvoi
 ## Contributing
 
 Feel free to dive in!
- - [Open an issue](https://github.com/EveryVoiceTTS/EveryVoice/issues/new) in the main EveryVoice repo with the tag `[DeepForceAligner]`,
+ - [Open an issue](https://github.com/EveryVoiceTTS/EveryVoice/issues/new) in the main EveryVoice repo with the tag `[DeepForcedAligner]`,
  - submit PRs to this repo with a corresponding submodule update PR to [EveryVoice](https://github.com/EveryVoiceTTS/EveryVoice).
 
 This repo follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
