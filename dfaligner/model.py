@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from everyvoice.model.aligner.config import AlignerConfig
 from everyvoice.text.text_processor import TextProcessor
+from everyvoice.config.type_definitions import TargetTrainingTextRepresentationLevel
 from everyvoice.utils import pydantic_validation_error_shortener
 
 from .config import DFAlignerConfig
@@ -37,7 +38,7 @@ class BatchNormConv(nn.Module):
 
 
 class Aligner(pl.LightningModule):
-    _VERSION: str = "1.0"
+    _VERSION: str = "1.1"
 
     def __init__(
         self,
@@ -126,6 +127,11 @@ class Aligner(pl.LightningModule):
         if ckpt_version < Version("1.0"):
             # Upgrading from 0.0 to 1.0 requires no changes; future versions might require changes
             checkpoint["model_info"]["version"] = "1.0"
+
+        # We changed the handling of phonological features in everyvoice==0.3.0
+        if ckpt_version < Version("1.1"):
+            raise ValueError(f"""There were breaking changes to the handling of text in version 1.1, introduced in version 0.3.0 of EveryVoice.
+                               Your model is version {ckpt_version} and your model will not work as a result. Please downgrade to everyvoice 0.2.0.""")
 
         return checkpoint
 
